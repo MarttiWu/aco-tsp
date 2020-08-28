@@ -18,7 +18,7 @@ using namespace std;
 
 const int block = 10;
 
-void execute(const int Algo,const int runs,const int iterations,const string filename,const int population,const double alpha,const double beta,const double rho);
+void execute(const int Algo,const int runs,const int generations,const string filename,const int population,const double alpha,const double beta,const double rho);
 
 #endif /* execute_hpp */
 
