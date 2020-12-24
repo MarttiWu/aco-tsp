@@ -14,8 +14,8 @@ Open terminal
     
 1. Run directly in the terminal by typing the following:
 
-        #./main [algo] [runs] [gen] [filename] [alpha] [beta] [rho]
-        ./main ac 30 1000 "" 2 3 0.05
+        #./main [algo] [runs] [gen] [filename] [population] [alpha] [beta] [rho]
+        ./main ac 30 1250 "" 50 1 5 0.8
     
 2. Or if you want to run multiple times, just by opening the "search.sh" and add whatever you want and run by typing
 
