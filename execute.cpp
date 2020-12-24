@@ -8,35 +8,34 @@
 
 #include "execute.hpp"
 
-void execute(const int Algo,const int runs,const int generations,const string filename,const int population,const double alpha,const double beta,const double rho){
-    ofstream fout,file;
-    fout.open("RESULT.txt");
-    file.open("data.txt");
-    vector<double> avg(generations/block);
+void execute(const int Algo,const int runs,const int iterations,const string filename,const int population,const double alpha,const double beta, const double rho){
+    srand((unsigned)time(NULL));
+
+    float avg=0;
     if (filename==""){
         for (int i=0;i<runs;i++){
-            fout<<"----------------------------------------"<<endl;
-            fout<<"run: "<<i+1<<endl;
+            cout<<"----------------------------------------"<<endl;
+            cout<<"run: "<<i<<endl;
             time_t start=0, end=0;
             if (Algo==1){
-                AC *r = new AC(bits,generations,alpha,beta,rho);
+                AC *r = new AC(iterations, population, alpha, beta, rho);
                 start = time(NULL);
-                r->run();
-                for (int j=0;j<=generations/block;j++){
-                    avg[j] += r->get_record_value(j*block);
-                }
-                fout<<"Best: "<<r->get_record_value(generations-1)<<endl;
+                r->TSPprob();
+                avg+=r->get_best();
+                cout<<"best: "<<r->get_best()<<endl;
+                cout<<"best route: ";
+                r->print_bestroute();
+                cout<<"to file"<<endl;
+                r->to_file();
+                cout<<endl;
                 end = time(NULL);
             }
             double diff = difftime(end, start);
-            fout<<"Run time: "<<diff<<"s"<<endl;
+            cout<<"Run time: "<<diff<<"s"<<endl;
         }
-        fout<<"----------------------------------------"<<endl;
-        for (int i=0;i<avg.size();i++){
-            avg[i] /= runs;
-            fout<<"Iter "<<i*block<<" : "<<avg[i]<<endl;
-            file<<i*block<<" "<<avg[i]<<endl;
-        }
+        cout<<"----------------------------------------"<<endl;
+        avg/=runs;
+        cout<<"average: "<<avg<<endl;
     }
     else{
         cout<<"random number file"<<endl;
@@ -44,4 +43,3 @@ void execute(const int Algo,const int runs,const int generations,const string fi
         //complete when needed
     }
 }
-
