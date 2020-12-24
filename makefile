@@ -1,10 +1,11 @@
-CC = g++ -Wall -std=c++11 
+CC = g++ -Wall -std=c++17 
 TARGET1 = main
-TARGET2 = AC
-TARGET3 = execute
+TARGET2 = execute
+TARGET3 = AC
 
-all: $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp
-	$(CC) -c $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp
+
+all: $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp 
+	$(CC) -c $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp 
 	$(CC) -o $(TARGET1) $(TARGET1).o $(TARGET2).o $(TARGET3).o
 	
 
