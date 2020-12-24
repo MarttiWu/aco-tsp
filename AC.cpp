@@ -69,14 +69,58 @@ void AC::TSPprob(){
                 best_route = v[i];
                 best_route.pop_back();
                 //correct bias
-                for (int j=0;j<best_route.size();j++)
-                    best_route[j]++;
+                //for (int j=0;j<best_route.size();j++)
+                //   best_route[j]++;
             }
         }
+        if (it%20==19||it==iter-1){
+            auto [b,b_route] = two_opt(best,best_route);
+            best = b;
+            best_route = b_route;
+        }
+        
         it++;
     }
+    //correct bias
+    for (int j=0;j<best_route.size();j++)
+        best_route[j]++;
     file.close();
 }
+
+tuple<double,vector<double>> two_opt(double b,vector<double> b_route,int count_max){
+    vector<double> v = b_route;
+
+    int count=0;
+    while(count<count_max){
+        vector<double> v = b_route;
+        int p1 = rand()%(b_route.size()-2)+1;
+        int p2;
+        do{p2 = rand()%(b_route.size()-2)+1;}while(p2<=p1+2 && p2>=p1-2);
+        //int p1 = rand()%(b_route.size()-2-6)+1;
+        //int p2 = p1+6;
+                
+        reverse(v.begin()+p1,v.begin()+p2+1);
+
+        double newdist = total_distance(v);
+        count++;
+        if (newdist<b){
+            b_route = v;
+            b = newdist;
+            count=0;
+        }
+    }
+    return make_tuple(b,b_route);
+}
+
+double total_distance(vector<double> route){
+    double sol = 0.0;
+    for (int i=0;i<route.size()-1;i++){
+        sol+=Distance[route[i]][route[i+1]];
+    }
+    return sol;
+}
+
+
 
 void AC::Initialization(int Ncitys){
     Distance = distance_mat(Ncitys);
@@ -84,10 +128,10 @@ void AC::Initialization(int Ncitys){
     //++++++++++++++++++++++++
     
     //1. nearest neighbor
-    //pheromone = greedy_algo(Ncitys);
+    pheromone = greedy_algo(Ncitys);
     
     //2. set initial value
-    pheromone = const_init(Ncitys);
+    //pheromone = const_init(Ncitys);
 }
 
 vector<vector<double> > AC::distance_mat(int Ncitys){
@@ -179,11 +223,12 @@ void AC::update_pher(const vector<vector<double> > v){
             if (count[v[i][j]][v[i][j+1]]==0){
                 pheromone[v[i][j]][v[i][j+1]] = Rho*pheromone[v[i][j]][v[i][j+1]];
                 //for sychronization
-                //pheromone[v[i][j+1]][v[i][j]] = pheromone[v[i][j]][v[i][j+1]];
-                
+                pheromone[v[i][j+1]][v[i][j]] = pheromone[v[i][j]][v[i][j+1]];
+                //
                 count[v[i][j]][v[i][j+1]] = 1;
                 //for sychronization
-                //count[v[i][j+1]][v[i][j]] = 1;
+                count[v[i][j+1]][v[i][j]] = 1;
+                //
             }
         }
     }
@@ -191,7 +236,8 @@ void AC::update_pher(const vector<vector<double> > v){
         for (int j=0;j<v[0].size()-2;j++){
             pheromone[v[i][j]][v[i][j+1]]+= (1.0/v[i][v[0].size()-1]);
             //for sychronization
-            //pheromone[v[i][j+1]][v[i][j]] += (1.0/v[i][v[0].size()-1]);
+            pheromone[v[i][j+1]][v[i][j]] += (1.0/v[i][v[0].size()-1]);
+            //
         }
     }
 }
@@ -208,13 +254,13 @@ vector<vector<double> > AC::construct_sol(vector<ANT> &ant){
     return v;
 }
                       
-double AC::total_distance(vector<double> route){
-    double sol = 0.0;
-    for (int i=0;i<route.size()-1;i++){
-        sol+=Distance[route[i]][route[i+1]];
-    }
-    return sol;
-}
+//double AC::total_distance(vector<double> route){
+//    double sol = 0.0;
+//    for (int i=0;i<route.size()-1;i++){
+//        sol+=Distance[route[i]][route[i+1]];
+//    }
+//    return sol;
+//}
 
 void AC::print_bestroute(){
     for (int i=0;i<best_route.size();i++){
@@ -256,7 +302,8 @@ ANT::ANT(int ncitys,vector<vector<double> > Distance,vector<vector<double> > phe
 }
 
 void ANT::run(){
-    int start = rand()%Ncitys;
+    //int start = rand()%Ncitys;
+    int start = 0; //starts from city 1
     route.push_back(start);
     tabu[start] = 1;
     for (int i=1;i<Ncitys;i++){
