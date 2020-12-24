@@ -18,9 +18,10 @@
 #include <algorithm>
 #include <vector>
 #include <fstream>
+#include <tuple>
 using namespace std;
 
-
+static vector<vector<double> > Distance;
 
 class ANT;
 
@@ -36,14 +37,15 @@ public:
     double cal_distance(vector<double> p1,vector<double> p2);
     void update_pher(const vector<vector<double> > v);
     vector<vector<double> > construct_sol(vector<ANT> &ant);
-    double total_distance(vector<double> route);
+    //double total_distance(vector<double> route);
     double get_best(){return best;}
     //friend class ANT;
     //friend double next_city();
     void print_bestroute();
     void to_file();
+    
 private:
-    vector<vector<double> > Distance;
+    //vector<vector<double> > Distance;
     vector<vector<double> > pheromone;
     double Alpha;
     double Beta;
@@ -76,5 +78,6 @@ private:
     double A;
     double B;
 };
-
+double total_distance(vector<double> route);
+tuple<double,vector<double>> two_opt(double b,vector<double> b_route,int count_max=1000);
 #endif /* AC_hpp */
