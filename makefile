@@ -1,14 +1,18 @@
-CC = g++ -Wall -std=c++17 
-TARGET1 = main
-TARGET2 = execute
-TARGET3 = AC
+CXXFLAGS += -std=c++17 -Wall 
 
+CPPFLAGS += 
 
-all: $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp 
-	$(CC) -c $(TARGET1).cpp $(TARGET2).cpp $(TARGET3).cpp 
-	$(CC) -o $(TARGET1) $(TARGET1).o $(TARGET2).o $(TARGET3).o
-	
+SOURCES := $(shell find . -name '*.cpp')
+
+HEADERS := $(shell find . -name '*.h')
+
+OUTPUT := main
+
+all: dep
+
+dep: $(SOURCES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(OUTPUT) $(SOURCES) 
 
 clean:
-	rm -f $(TARGET1) $(TARGET2) $(TARGET3)
-	rm -f $(TARGET1).o $(TARGET2).o $(TARGET3).o
+	$(RM) $(OUTPUT)
+
