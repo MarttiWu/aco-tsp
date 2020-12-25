@@ -62,6 +62,17 @@ void AC::TSPprob(){
             ant.push_back(temp);
         }
         vector<vector<double> > v = construct_sol(ant);
+        if (it<500&&it!=iter-1){
+            for (int i=0;i<v.size();i++){
+                double f = v[i].back();
+                vector<double> v1(v[i].begin(),v[i].begin()+v[i].size()-1);
+                auto [x,y] = two_opt(f,v1);
+                v[i].clear();
+                v[i] = y;
+                v[i].push_back(x);
+            }
+        }
+        
         update_pher(v);
         for (int i=0;i<v.size();i++){
             if (v[i].back()<best){
@@ -73,7 +84,7 @@ void AC::TSPprob(){
                 //   best_route[j]++;
             }
         }
-        if (it%20==19||it==iter-1){
+        if (it==iter-1){
             auto [b,b_route] = two_opt(best,best_route);
             best = b;
             best_route = b_route;
