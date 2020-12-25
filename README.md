@@ -15,7 +15,7 @@ Open terminal
 1. Run directly in the terminal by typing the following:
 
         #./main [algo] [runs] [gen] [filename] [population] [alpha] [beta] [rho]
-        ./main ac 30 1250 "" 50 1 5 0.8
+        ./main ac 30 1250 "" 30 1 5 0.8
     
 2. Or if you want to run multiple times, just by opening the "search.sh" and add whatever you want and run by typing
 
@@ -31,7 +31,7 @@ You can change the iteration block by modifying
 in "execute.hpp".
 
 # Results
-
-![alt text]()
+best route: 430.396
+![alt text](430_396.png)
 
 
