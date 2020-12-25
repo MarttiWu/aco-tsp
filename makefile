@@ -1,4 +1,4 @@
-CXXFLAGS += -std=c++17 -Wall 
+CXXFLAGS += -std=c++17 -Wall -O3
 
 CPPFLAGS += 
 
@@ -11,7 +11,7 @@ OUTPUT := main
 all: dep
 
 dep: $(SOURCES) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(OUTPUT) $(SOURCES) 
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(OUTPUT) $(SOURCES)
 
 clean:
 	$(RM) $(OUTPUT)
