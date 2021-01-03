@@ -28,7 +28,7 @@ class ANT;
 class AC{
 public:
     AC();
-    AC(int iterations,int population,double alpha,double beta,double rho);
+    AC(int iterations,int population,double alpha,double beta,double rho, int i2opt, string fname);
     void TSPprob();
     void Initialization(int Ncitys);
     vector<vector<double> > distance_mat(int Ncitys);
@@ -53,6 +53,8 @@ private:
     int pop;
     double Rho;
     double best;
+    int interval_2opt;
+    string filename;
     vector<double> best_route;
     vector<vector<double> > Data;
     int ncitys;
@@ -79,5 +81,5 @@ private:
     double B;
 };
 double total_distance(vector<double> route);
-tuple<double,vector<double>> two_opt(double b,vector<double> b_route,int count_max=1000);
+tuple<double,vector<double>> two_opt(double b,vector<double> b_route,int count_max=10000);
 #endif /* AC_hpp */
