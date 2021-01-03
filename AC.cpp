@@ -17,19 +17,22 @@ AC::AC(){
     best = 10000.0;
 }
 
-AC::AC(int iterations,int population,double alpha,double beta,double rho){
+AC::AC(int iterations,int population,double alpha,double beta,double rho, int i2opt, string fname){
     iter = iterations;
     pop = population;
     Alpha = alpha;
     Beta = beta;
     Rho = rho;
     best = 10000.0;
+    interval_2opt = i2opt;
+    filename = fname;
 }
 
 
 void AC::TSPprob(){
+    cout<<filename<<endl;
     ifstream file;
-    file.open("TSP51.txt");
+    file.open(filename);
     vector<vector<double> > data;
     while(!file.eof()){
         vector<double> t(3);
@@ -40,29 +43,18 @@ void AC::TSPprob(){
     Data = data;
     ncitys = data.size();
     Initialization(ncitys);
-    //
-    vector<double> test(52);
-    double a[52] = {1,22,8,26,31,28,3,36,35,20,2,29,21,16,50,34,30,9,49,10,39,33,45,15,44,42,40,19,41,13,25,14,24,43,7,23,48,6,27,51,46,12,47,18,4,17,37,5,38,11,32,1};
-    for (int i=0;i<52;i++){
-        test[i] = a[i]-1;
-    }
-    cout<<"preference answer: "<<total_distance(test)<<endl;
-    cout<<"route: ";
-    for (int i=0;i<52;i++){
-        cout<<a[i]<<", ";
-    }
-    cout<<endl;
-    //
 
     int it = 0;
     while (it<iter){
+        if (it%100==0)
+            cout<<"iter: "<<it<<endl;
         vector<ANT> ant;
         for (int i=0;i<pop;i++){
             ANT temp(ncitys, Distance, pheromone, Alpha, Beta);
             ant.push_back(temp);
         }
         vector<vector<double> > v = construct_sol(ant);
-        if (it<500&&it!=iter-1){
+        if (interval_2opt!=0&&(it%interval_2opt==0||it==iter-1)){
             for (int i=0;i<v.size();i++){
                 double f = v[i].back();
                 vector<double> v1(v[i].begin(),v[i].begin()+v[i].size()-1);
@@ -79,15 +71,7 @@ void AC::TSPprob(){
                 best = v[i].back();
                 best_route = v[i];
                 best_route.pop_back();
-                //correct bias
-                //for (int j=0;j<best_route.size();j++)
-                //   best_route[j]++;
             }
-        }
-        if (it==iter-1){
-            auto [b,b_route] = two_opt(best,best_route);
-            best = b;
-            best_route = b_route;
         }
         
         it++;
@@ -264,14 +248,6 @@ vector<vector<double> > AC::construct_sol(vector<ANT> &ant){
     }
     return v;
 }
-                      
-//double AC::total_distance(vector<double> route){
-//    double sol = 0.0;
-//    for (int i=0;i<route.size()-1;i++){
-//        sol+=Distance[route[i]][route[i+1]];
-//    }
-//    return sol;
-//}
 
 void AC::print_bestroute(){
     for (int i=0;i<best_route.size();i++){
@@ -282,7 +258,7 @@ void AC::print_bestroute(){
 void AC::to_file(){
     static int f;
     ofstream fout;
-    string file = "ans"+to_string(f)+".txt";
+    string file = "Results/ans"+to_string(f)+".txt";
     fout.open(file);
     for (int i=0;i<best_route.size();i++){
         for (int j=0;j<3;j++){
