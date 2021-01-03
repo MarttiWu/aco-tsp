@@ -8,7 +8,7 @@
 
 # Usage
 
-(Only tested under MacOS)
+(Only tested under MacOS)  
 Open terminal
 
     make
@@ -30,15 +30,15 @@ PS [2opt] : e.g. 2 indicates implements 2opt for every 2 generations. 0 as defau
  
 # Results
 ## eil51
-best route: 430.396
-This was found among 30 runs and the [2opt] was set to 2.
+best route: 430.396  
+This was found among 30 runs and the [2opt] was set to 2.  
 ![alt text](best_results/eil51/430_396.png)
 
 ## eil101
-best route: 653.338
-This was found among 30 runs and the [2opt] was set to 2.
+best route: 653.338  
+This was found among 30 runs and the [2opt] was set to 2.  
 ![alt text](best_results/eil101/653_338.png)
 
-PS There may be chances that you cannot get the same result due to the randomness!
+PS There may be chances that you cannot get the same result due to randomness!
 
 
