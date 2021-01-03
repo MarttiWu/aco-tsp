@@ -29,6 +29,7 @@ PS [2opt] : e.g. 2 indicates implements 2opt for every 2 generations. 0 as defau
  
  
 # Results
+The best results found for both eil51 and eil101 are placed in best_results folder.  
 ## eil51
 best route: 430.396  
 This was found among 30 runs and the [2opt] was set to 2.  
