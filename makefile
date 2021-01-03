@@ -11,7 +11,7 @@ OUTPUT := main
 all: dep
 
 dep: $(SOURCES) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(OUTPUT) $(SOURCES)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(OUTPUT) $(SOURCES) -I./lib/
 
 clean:
 	$(RM) $(OUTPUT)
